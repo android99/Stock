@@ -1,6 +1,7 @@
 package com.tom.stock;
 
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.tom.stock.backend.myApi.MyApi;
+import com.tom.stock.backend.myApi.model.LoginValidation;
 
 import java.io.IOException;
 
@@ -65,10 +67,40 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View v){
         String userid = ((EditText)findViewById(R.id.userid)).getText().toString();
         String passwd = ((EditText)findViewById(R.id.passwd)).getText().toString();
-        if (userid.equals("jack") && passwd.equals("1234")){
+        new LoginTask().execute(userid, passwd);
+        /*if (userid.equals("jack") && passwd.equals("1234")){
             setResult(RESULT_OK);
             finish();
         }else{
+
+        }*/
+    }
+
+    class LoginTask extends AsyncTask<String, Void, LoginValidation>{
+
+        @Override
+        protected LoginValidation doInBackground(String... params) {
+
+            try {
+                LoginValidation result = api.login(params[0], params[1]).execute();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(LoginValidation loginValidation) {
+            if (loginValidation!=null && loginValidation.getResultCode()==1){
+                Log.d(TAG, loginValidation.getMessage());
+            }else{
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setMessage("登入失敗")
+                        .setPositiveButton("OK", null)
+                        .show();
+
+            }
 
         }
     }
