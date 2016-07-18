@@ -1,5 +1,6 @@
 package com.tom.stock;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.gms.gcm.GcmPubSub;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
@@ -25,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         if (api==null){
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
-                    .setRootUrl("http://10.0.2.2:8080/_ah/api")
+                    .setRootUrl("http://10.0.2.2:8080/_ah/regApi")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> request) throws IOException {
@@ -35,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
             api = builder.build();
         }
         new TestTask().execute("Tom");
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
+
     }
 
     class TestTask extends AsyncTask<String, Void, String>{
