@@ -13,7 +13,8 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.tom.stock.backend.RegistrationEndpoint, com.tom.stock.backend.MessagingEndpoint</param-value>
+            <param-value>com.tom.stock.backend.RegistrationEndpoint,
+                com.tom.stock.backend.MessagingEndpoint, com.tom.stock.backend.StockEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -21,6 +22,14 @@
         <url-pattern>/_ah/spi/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>InitStockServlet</servlet-name>
+        <servlet-class>com.tom.stock.backend.InitStockServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InitStockServlet</servlet-name>
+        <url-pattern>/init</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>

@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
             api = builder.build();
         }
-        new TestTask().execute("Tom");
+//        new TestTask().execute("Tom");
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
 
